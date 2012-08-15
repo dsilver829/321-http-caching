@@ -5,6 +5,7 @@ class ProductsController < ApplicationController
 
   def show
     @product = Product.find(params[:id])
+    fresh_when etag: @product, last_modified: @product.updated_at
   end
 
   def new
