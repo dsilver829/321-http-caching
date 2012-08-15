@@ -1,11 +1,13 @@
 class ProductsController < ApplicationController
   def index
-    @products = Product.all
+    @products = Product.scoped
+    fresh_when last_modified: @products.maximum(:updated_at)
   end
 
   def show
     @product = Product.find(params[:id])
-    fresh_when etag: @product, last_modified: @product.updated_at
+    expires_in 5.minutes
+    fresh_when etag: @product, public: true
   end
 
   def new
